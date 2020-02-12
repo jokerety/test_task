@@ -1,3 +1,5 @@
-import test from './app/numbersComponent/numbers';
+import NumberInput from './app/numbersComponent/NumberComponent';
+import NumberBoxComponent from './app/numberBoxComponent/NumberBoxComponent';
 
-test();
+customElements.define('number-box', NumberBoxComponent);
+customElements.define('number-input', NumberInput);

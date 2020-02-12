@@ -24,7 +24,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.json'],
+        extensions: ['.ts', '.js', '.json', '.css', '.scss'],
     },
 
     devServer: {
@@ -45,15 +45,14 @@ module.exports = {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-modules-typescript-loader',
                     },
                     {
                         loader: 'css-loader',
-                        options: { sourceMap: true },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: { sourceMap: true },
+                        options: { sourceMap: true, modules: true },
                     },
                     {
                         loader: 'sass-loader',
@@ -61,38 +60,9 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.(png|gif|jpe?g)$/,
-                loaders: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[path][name].[ext]',
-                        },
-                    },
-                    'img-loader',
-                ],
-            },
 
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                loaders: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[path][name].[ext]',
-                        },
-                    },
-                ],
-            },
-
-            {
-                test: /\.svg$/,
-                loader: 'svg-url-loader',
-            },
-
-            { test: /\.tsx?$/, loader: 'babel-loader' },
-            { test: /\.tsx?$/, loader: 'ts-loader' },
+            { test: /\.ts$/, loader: 'babel-loader' },
+            { test: /\.ts$/, loader: 'ts-loader' },
 
             { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
         ],
@@ -107,7 +77,7 @@ module.exports = {
             template: '../public/index.html',
         }),
 
-        new CopyWebpackPlugin([{ from: './', to: 'app' }], {
+        new CopyWebpackPlugin([{ from: './app', to: 'app' }], {
             ignore: [{ glob: '*.svg' }, { glob: '*.ts' }, { glob: '*.scss' }, { glob: '*.ttf' }],
         }),
     ],
