@@ -1,25 +1,35 @@
 const numberBoxTemplate = `
     <style>
-    .numberInputBox {
-      margin-right: 4px;
-      border-radius: 2px;
-      background-color: #F0F0F0;;
-      width: 25px;
-      height: 32px;
-      padding: 7px 8px 8px 8px;
-      font-size: 15px;
-      line-height: 18px;
-      box-sizing: border-box;
-      border: 0;
-      outline: 0;
-    }
-    
-    .numberInputBox:hover {
-      border: 1px solid rgba(0, 0, 0, 0.48);
-    }
-    .numberInputBox:focus {
-        border: 1px solid rgba(255,0,1,0.48);
-    }
+        .numberInputBox {
+          margin: 0 2px;
+          border-radius: 2px;
+          background-color: #F0F0F0;;
+          width: 25px;
+          height: 32px;
+          padding: 7px 8px 8px 8px;
+          font-size: 15px;
+          line-height: 18px;
+          box-sizing: border-box;
+          outline: 0;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 1000 1000' enable-background='new 0 0 1000 1000' xml:space='preserve'%3E%3Cg%3E%3Cpath d='M10,452.1h980v95.7H10V452.1z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .numberInputBox:hover {
+            border: 1px solid rgba(0, 0, 0, 0.24);
+        }
+
+        .numberInputBox:focus {
+            border: 1px solid rgba(0 ,0, 0, 0.48);
+        }
+
+        .numberInputBox::-webkit-inner-spin-button, 
+        .numberInputBox::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
     </style>
     <input class="numberInputBox">
 `;
@@ -48,18 +58,14 @@ class NumberBoxComponent extends HTMLElement {
         this._elements.input.addEventListener('input', this._onInput);
     }
 
-    _onInput = event => {
+    _onInput = (event: any) => {
         event.preventDefault();
-        this._elements.input.value = event.target.value;
-    }
+        this._elements.input.value = event.target.value[1] || event.target.value[0] || '';
+    };
 
-    connectedCallback() {
-        //this.innerHTML = numberBoxTemplate;
-    }
-
-    disconnectedCallback() {
-        // браузер вызывает этот метод при удалении элемента из документа
-        // (может вызываться много раз, если элемент многократно добавляется/удаляется)
+    get value(): string {
+        const { input } = this._elements;
+        return input.value;
     }
 
     static get observedAttributes(): string[] {
@@ -67,30 +73,19 @@ class NumberBoxComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+        const { input } = this._elements;
         switch (name) {
             case 'value':
-                const { input } = this._elements;
-                /**
-                 * Маска инпута. Значения:
-                 * "I" - одиночный инпут для ввода одной цифры
-                 * "X" - серый блок с символом "X"
-                 * "*" - серый блок с символом "●"
-                 * <цифра> - серый блок с введенной цифрой
-                 * <не цифра> - символ отображается "как есть"
-                 */
-
                 if (newValue === 'I') {
                     input.value = '';
+                    input.type = 'number';
+                    input.name = 'inputNumber';
                 } else {
-                    input.disabled = true;
                     input.value = newValue;
-
-                    if (newValue === 'X') {
-                    } else if (newValue === '*') {
-                    } else if (Number.isInteger(newValue) && Number(newValue) >= 0 && Number(newValue) <= 9) {
-                    } else {
-                    }
                 }
+                break;
+            default:
+                break;
         }
     }
 

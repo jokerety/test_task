@@ -60,6 +60,10 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.svg$/,
+                loader: 'svg-url-loader',
+            },
 
             { test: /\.ts$/, loader: 'babel-loader' },
             { test: /\.ts$/, loader: 'ts-loader' },

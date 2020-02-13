@@ -12,4 +12,16 @@ body {
 
 .numberInputContainer {
   display: flex;
+  align-items: center;
+}
+.separator {
+  height: fit-content;
+  color: #111212;
+}
+.errorActive {
+  display: block;
+  color: red;
+}
+.noError {
+  display: none;
 }

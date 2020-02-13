@@ -5,6 +5,21 @@
     <title>Document</title>
 </head>
 <body>
-    <number-input></number-input>
+    <number-input id="number_input" mask="+7(985)0II-**-**"></number-input>
+    <button onclick="handleClick()">Проверить</button>
 </body>
+<script>
+    function handleClick() {
+        const numberInput = document.getElementById("number_input");
+        const inputValues = numberInput.value;
+
+        //Запрос к бэку для проверки ответа...
+        const answer = '23';
+        if (answer === inputValues) {
+            alert('Вы угадали!');
+        } else {
+            numberInput.error();
+        }
+    }
+</script>
 </html>
