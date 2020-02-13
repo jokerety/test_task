@@ -1,36 +1,7 @@
+import './scss/style.scss';
+
 const numberBoxTemplate = `
-    <style>
-        .numberInputBox {
-          margin: 0 2px;
-          border-radius: 2px;
-          background-color: #F0F0F0;;
-          width: 25px;
-          height: 32px;
-          padding: 7px 8px 8px 8px;
-          font-size: 15px;
-          line-height: 18px;
-          box-sizing: border-box;
-          outline: 0;
-          border: 1px solid rgba(0, 0, 0, 0.12);
-          background-repeat: no-repeat;
-          background-size: contain;
-          background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 1000 1000' enable-background='new 0 0 1000 1000' xml:space='preserve'%3E%3Cg%3E%3Cpath d='M10,452.1h980v95.7H10V452.1z'/%3E%3C/g%3E%3C/svg%3E");
-        }
-        
-        .numberInputBox:hover {
-            border: 1px solid rgba(0, 0, 0, 0.24);
-        }
-
-        .numberInputBox:focus {
-            border: 1px solid rgba(0 ,0, 0, 0.48);
-        }
-
-        .numberInputBox::-webkit-inner-spin-button, 
-        .numberInputBox::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-    </style>
+    <link rel="stylesheet" href="./css/app.css">
     <input class="numberInputBox">
 `;
 
@@ -47,20 +18,26 @@ class NumberBoxComponent extends HTMLElement {
         this._addHandlers();
     }
 
-    _initElements() {
+    _initElements(): void {
         const input = this.shadowRoot.querySelector('input');
         this._elements = {
             input,
         };
     }
 
-    _addHandlers() {
+    _addHandlers(): void {
         this._elements.input.addEventListener('input', this._onInput);
     }
 
-    _onInput = (event: any) => {
+    _onInput = (event: Event): void => {
         event.preventDefault();
-        this._elements.input.value = event.target.value[1] || event.target.value[0] || '';
+        const { input } = this._elements;
+        input.value = (event.target as HTMLInputElement).value[1] || (event.target as HTMLInputElement).value[0] || '';
+        if (input.value === '') {
+            input.classList.add('numberInputBoxUnderScope');
+        } else {
+            input.classList.remove('numberInputBoxUnderScope');
+        }
     };
 
     get value(): string {
@@ -68,33 +45,44 @@ class NumberBoxComponent extends HTMLElement {
         return input.value;
     }
 
+    error(): void {
+        const { input } = this._elements;
+        input.classList.add('numberInputBoxInvalid');
+    }
+
+    success(): void {
+        const { input } = this._elements;
+        input.classList.remove('numberInputBoxInvalid');
+    }
+
     static get observedAttributes(): string[] {
         return ['value'];
     }
 
-    attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
         const { input } = this._elements;
-        switch (name) {
-            case 'value':
-                if (newValue === 'I') {
+        if (name === 'value') {
+            switch (newValue) {
+                case 'I':
                     input.value = '';
                     input.type = 'number';
-                    input.name = 'inputNumber';
-                } else {
+                    input.classList.add('numberInputBoxUnderScope', 'numberInputBoxWithHover');
+                    break;
+                case 'X':
+                    input.disabled = true;
+                    input.classList.add('numberInputBoxCross', 'numberInputBoxMock');
+                    break;
+                case '*':
+                    input.disabled = true;
+                    input.classList.add('numberInputBoxPoint', 'numberInputBoxMock');
+                    break;
+                default:
                     input.value = newValue;
-                }
-                break;
-            default:
-                break;
+                    input.disabled = true;
+                    input.classList.add('numberInputBoxMock');
+            }
         }
     }
-
-    adoptedCallback() {
-        // вызывается, когда элемент перемещается в новый документ
-        // (происходит в document.adoptNode, используется очень редко)
-    }
-
-    // у элемента могут быть ещё другие методы и свойства
 }
 
 export default NumberBoxComponent;

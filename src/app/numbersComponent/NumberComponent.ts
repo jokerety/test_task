@@ -1,26 +1,14 @@
+import './scss/style.scss';
+
 const numberComponentTemplate = `
-    <style>
-        .numberInputContainer {
-            display: flex;
-            align-items: center;
-         }
-         .separator {
-            height: fit-content;
-            color: #111212;
-         }
-         .errorActive {
-            display: block;
-            color: red;
-         }
-         .noError {
-            display: none;
-         }
-    </style>
-    <div class="numberInputContainer">
+    <link rel="stylesheet" href="./css/app.css">
+    <div class="numberInput">
+        <div class="numberInputContainer"></div>
+        <div class="error hide">
+            Неверный номер, попробуйте еще раз
+        </div>    
     </div>
-    <div class="noError">
-        Неверный номер, попробуйте еще раз
-    </div>
+
 `;
 
 interface MaskNumberInterface {
@@ -36,30 +24,19 @@ class NumberComponent extends HTMLElement {
         error: Element;
     };
     private inputMasks: MaskNumberInterface[];
-    private isError: boolean;
 
     constructor() {
         super();
-        // элемент создан
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.innerHTML = numberComponentTemplate;
         this.mask = '';
         this.inputMasks = [];
         this._initElements();
-        this.isError = false;
     }
 
-    get value(): string {
-        const { inputs } = this._elements;
-        return inputs.reduce((acc: string, elem) => {
-            acc += elem.value || '_';
-            return acc;
-        }, '');
-    }
-
-    _initElements() {
+    _initElements(): void {
         const root = this.shadowRoot.querySelector('.numberInputContainer');
-        const error = this.shadowRoot.querySelector('.noError');
+        const error = this.shadowRoot.querySelector('.error');
         this._elements = {
             root: root,
             inputs: [],
@@ -67,36 +44,50 @@ class NumberComponent extends HTMLElement {
         };
     }
 
+    get value(): string {
+        const { inputs } = this._elements;
+        return inputs.reduce((acc: string, elem) => {
+            acc += (elem as any).value || '_';
+            return acc;
+        }, '');
+    }
+
     static get observedAttributes(): string[] {
         return ['mask'];
     }
 
-    attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-        // вызывается при изменении одного из перечисленных выше атрибутов
-        switch (name) {
-            case 'mask':
-                this.mask = newValue;
-                this.inputMasks = this.mask.split('').map(elem => {
-                    if (elem === 'I') {
-                        return { type: 'input', value: elem };
-                    } else if (elem === 'X' || elem === '*' || !isNaN(Number.parseInt(elem))) {
-                        return { type: 'greyBox', value: elem };
-                    } else {
-                        return { type: 'separator', value: elem };
-                    }
-                });
-                this.render();
+    attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
+        if (name === 'mask') {
+            this.mask = newValue;
+            this.inputMasks = this.mask.split('').map(elem => {
+                if (elem === 'I') {
+                    return { type: 'input', value: elem };
+                } else if (elem === 'X' || elem === '*' || !isNaN(Number.parseInt(elem))) {
+                    return { type: 'inputMock', value: elem };
+                } else {
+                    return { type: 'separator', value: elem };
+                }
+            });
+            this.render();
         }
     }
 
     error(): void {
-        this.isError = true;
-        this.render();
+        const { inputs, error } = this._elements;
+        inputs.forEach(elem => (elem as any).error());
+        error.classList.remove('hide');
+    }
+
+    success(): void {
+        const { inputs, error } = this._elements;
+        inputs.forEach(elem => (elem as any).success());
+        error.classList.add('hide');
     }
 
     render(): void {
         const { root } = this._elements;
         const inputs: Element[] = [];
+
         root.innerHTML = '';
         this.inputMasks.forEach(elem => {
             let tag = null;
@@ -109,10 +100,9 @@ class NumberComponent extends HTMLElement {
                 case 'input':
                     tag = document.createElement('number-box');
                     tag.setAttribute('value', elem.value);
-                    // tag.setAttribute('error', String(this.isError));
                     inputs.push(tag);
                     break;
-                case 'greyBox':
+                case 'inputMock':
                     tag = document.createElement('number-box');
                     tag.setAttribute('value', elem.value);
                     break;
@@ -120,11 +110,6 @@ class NumberComponent extends HTMLElement {
             root.appendChild(tag);
             this._elements.inputs = inputs;
         });
-        if (this.isError) {
-            const { error } = this._elements;
-            error.classList.remove('noError');
-            error.className = 'errorActive';
-        }
     }
 }
 

@@ -10,18 +10,37 @@ body {
   background-color: white;
 }
 
-.numberInputContainer {
+.numberInput {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+
+  .numberInputContainer {
+    display: flex;
+    align-items: center;
+
+    font-size: 15px;
+    line-height: 18px;
+    font-family: "ArialMT";
+    color: #333333;
+
+    .separator {
+      height: fit-content;
+      color: #111212;
+    }
+  }
+
+  .error {
+    display: block;
+
+    font-size: 13px;
+    line-height: 20px;
+
+    color: #FF1100;
+  }
+
+  .hide {
+    display: none !important;
+  }
 }
-.separator {
-  height: fit-content;
-  color: #111212;
-}
-.errorActive {
-  display: block;
-  color: red;
-}
-.noError {
-  display: none;
-}
+

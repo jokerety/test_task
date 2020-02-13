@@ -45,18 +45,30 @@ module.exports = {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: 'style-loader',
-                    },
-                    {
-                        loader: 'css-modules-typescript-loader',
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
                         loader: 'css-loader',
-                        options: { sourceMap: true, modules: true },
+                        options: { sourceMap: true },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: { sourceMap: true },
                     },
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
+                    },
+                ],
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loaders: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]',
+                        },
                     },
                 ],
             },

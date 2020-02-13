@@ -1,0 +1,63 @@
+@import "fonts";
+
+.numberInputBox {
+  box-sizing: border-box;
+
+  width: 25px;
+  height: 32px;
+
+  outline: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+
+  padding: 7px 8px 8px 8px;
+  margin: 0 2px;
+
+  font-size: 15px;
+  line-height: 18px;
+  font-family: "ArialMT";
+  color: #333333;
+
+  &UnderScope {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("../svg/underscope.svg");
+  }
+
+  &WithHover {
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.24);
+    }
+  }
+
+  &Point {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("../svg/circle.svg");
+  }
+
+  &Cross {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("../svg/cross.svg");
+  }
+
+  &Mock {
+    background-color: #F0F0F0;
+    border: 1px solid #F0F0F0;
+  }
+
+  &:focus {
+    border: 1px solid rgba(0 ,0, 0, 0.48);
+  }
+
+  &Invalid {
+    border: 1px solid #FF1100 !important;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
