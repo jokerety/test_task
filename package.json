@@ -7,7 +7,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
-    "production": "NODE_ENV=production webpack",
+    "production": "NODE_ENV=production webpack"
   },
   "husky": {
     "hooks": {
@@ -16,8 +16,8 @@
   },
   "lint-staged": {
     "./src/*.{js,jsx,ts,tsx}": [
-      "npx prettier --write",
-      "eslint src/*.js --fix-dry-run"
+      "eslint --fix",
+      "git add"
     ]
   },
   "repository": {
