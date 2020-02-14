@@ -29,32 +29,6 @@ class NumberBoxComponent extends HTMLElement {
         this._elements.input.addEventListener('input', this._onInput);
     }
 
-    _onInput = (event: Event): void => {
-        event.preventDefault();
-        const { input } = this._elements;
-        input.value = (event.target as HTMLInputElement).value[1] || (event.target as HTMLInputElement).value[0] || '';
-        if (input.value === '') {
-            input.classList.add('numberInputBoxUnderScope');
-        } else {
-            input.classList.remove('numberInputBoxUnderScope');
-        }
-    };
-
-    get value(): string {
-        const { input } = this._elements;
-        return input.value;
-    }
-
-    error(): void {
-        const { input } = this._elements;
-        input.classList.add('numberInputBoxInvalid');
-    }
-
-    success(): void {
-        const { input } = this._elements;
-        input.classList.remove('numberInputBoxInvalid');
-    }
-
     static get observedAttributes(): string[] {
         return ['value'];
     }
@@ -82,6 +56,32 @@ class NumberBoxComponent extends HTMLElement {
                     input.classList.add('numberInputBoxMock');
             }
         }
+    }
+
+    _onInput = (event: Event): void => {
+        event.preventDefault();
+        const { input } = this._elements;
+        input.value = (event.target as HTMLInputElement).value[1] || (event.target as HTMLInputElement).value[0] || '';
+        if (input.value === '') {
+            input.classList.add('numberInputBoxUnderScope');
+        } else {
+            input.classList.remove('numberInputBoxUnderScope');
+        }
+    };
+
+    get value(): string {
+        const { input } = this._elements;
+        return input.value;
+    }
+
+    error(): void {
+        const { input } = this._elements;
+        input.classList.add('numberInputBoxInvalid');
+    }
+
+    success(): void {
+        const { input } = this._elements;
+        input.classList.remove('numberInputBoxInvalid');
     }
 }
 

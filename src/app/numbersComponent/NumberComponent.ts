@@ -1,3 +1,4 @@
+import { MaskNumberInterface, CustomElement } from './types/types';
 import './scss/style.scss';
 
 const numberComponentTemplate = `
@@ -8,22 +9,16 @@ const numberComponentTemplate = `
             Неверный номер, попробуйте еще раз
         </div>    
     </div>
-
 `;
-
-interface MaskNumberInterface {
-    type: string;
-    value: string;
-}
 
 class NumberComponent extends HTMLElement {
     private mask: string;
+    private inputMasks: MaskNumberInterface[];
     private _elements: {
         root: Element;
-        inputs: Element[];
+        inputs: CustomElement[];
         error: Element;
     };
-    private inputMasks: MaskNumberInterface[];
 
     constructor() {
         super();
@@ -42,14 +37,6 @@ class NumberComponent extends HTMLElement {
             inputs: [],
             error: error,
         };
-    }
-
-    get value(): string {
-        const { inputs } = this._elements;
-        return inputs.reduce((acc: string, elem) => {
-            acc += (elem as any).value || '_';
-            return acc;
-        }, '');
     }
 
     static get observedAttributes(): string[] {
@@ -72,21 +59,29 @@ class NumberComponent extends HTMLElement {
         }
     }
 
+    get value(): string {
+        const { inputs } = this._elements;
+        return inputs.reduce((acc: string, elem) => {
+            acc += elem.value || '_';
+            return acc;
+        }, '');
+    }
+
     error(): void {
         const { inputs, error } = this._elements;
-        inputs.forEach(elem => (elem as any).error());
+        inputs.forEach(elem => elem.error());
         error.classList.remove('hide');
     }
 
     success(): void {
         const { inputs, error } = this._elements;
-        inputs.forEach(elem => (elem as any).success());
+        inputs.forEach(elem => elem.success());
         error.classList.add('hide');
     }
 
     render(): void {
         const { root } = this._elements;
-        const inputs: Element[] = [];
+        const inputs: CustomElement[] = [];
 
         root.innerHTML = '';
         this.inputMasks.forEach(elem => {
@@ -100,7 +95,7 @@ class NumberComponent extends HTMLElement {
                 case 'input':
                     tag = document.createElement('number-box');
                     tag.setAttribute('value', elem.value);
-                    inputs.push(tag);
+                    inputs.push(tag as CustomElement);
                     break;
                 case 'inputMock':
                     tag = document.createElement('number-box');
@@ -110,6 +105,14 @@ class NumberComponent extends HTMLElement {
             root.appendChild(tag);
             this._elements.inputs = inputs;
         });
+        {
+                    const qqw = 121212;;
+                    console.log(
+
+
+                        'qq'
+                    );
+        }
     }
 }
 

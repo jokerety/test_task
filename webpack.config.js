@@ -5,7 +5,6 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ImageMinPlugin = require('imagemin-webpack-plugin').default;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -24,14 +23,13 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.json', '.css', '.scss'],
+        extensions: ['.ts', '.js', '.json', '.scss'],
     },
 
     devServer: {
         index: 'index.html',
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        hot: true,
         port: 9000,
         writeToDisk: true,
         open: 'chrome',
@@ -103,11 +101,6 @@ if (isProduction) {
     module.exports.plugins.push(
         new UglifyJSPlugin({
             sourceMap: true,
-        }),
-    );
-    module.exports.plugins.push(
-        new ImageMinPlugin({
-            test: /\.(png|jpe?g|gif|svg)$/i,
         }),
     );
     module.exports.plugins.push(

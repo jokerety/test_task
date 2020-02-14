@@ -1,5 +1,11 @@
 @import "fonts";
 
+@mixin icon ($url) {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url($url);
+}
+
 .numberInputBox {
   box-sizing: border-box;
 
@@ -19,9 +25,7 @@
   color: #333333;
 
   &UnderScope {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("../svg/underscope.svg");
+    @include icon("../static/svg/underscope.svg");
   }
 
   &WithHover {
@@ -31,15 +35,11 @@
   }
 
   &Point {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("../svg/circle.svg");
+    @include icon("../static/svg/circle.svg");
   }
 
   &Cross {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("../svg/cross.svg");
+    @include icon("../static/svg/cross.svg");
   }
 
   &Mock {
