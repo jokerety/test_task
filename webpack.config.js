@@ -91,10 +91,7 @@ module.exports = {
             template: '../public/index.html',
         }),
 
-        new CopyWebpackPlugin([{ from: './app', to: 'app' }], {
-            test: /\.(d.ts|ttf)$/,
-            ignore: [{ glob: '*.svg' }, { glob: '*.scss' }, { glob: '*.ts' }],
-        }),
+        new CopyWebpackPlugin([{ from: './app', to: 'app' }], {}),
     ],
 };
 

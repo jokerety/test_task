@@ -1,13 +1,15 @@
 {
   "name": "test_task_maslov",
-  "version": "2.0.0",
+  "version": "2.0.6",
   "description": "Тестовое задание для стажировки",
   "main": "./src/index.ts",
+  "files": ["dist/"],
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
-    "production": "NODE_ENV=production webpack"
+    "production": "NODE_ENV=production webpack",
+    "pre-publish": "npm run production"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
