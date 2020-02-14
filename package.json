@@ -1,13 +1,14 @@
 {
-  "name": "test_task",
-  "version": "1.0.0",
+  "name": "test_task_maslov",
+  "version": "2.0.0",
   "description": "Тестовое задание для стажировки",
-  "main": "src/ts/app.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
-    "production": "NODE_ENV=production webpack"
+    "production": "NODE_ENV=production webpack",
+    "test": "webpack-dev-server --open"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -33,7 +34,6 @@
   },
   "homepage": "https://github.com/jokerety/test_task#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.4",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-typescript": "^7.8.3",
@@ -70,5 +70,8 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "@babel/core": "^7.8.4"
   }
 }

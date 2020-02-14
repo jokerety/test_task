@@ -92,7 +92,8 @@ module.exports = {
         }),
 
         new CopyWebpackPlugin([{ from: './app', to: 'app' }], {
-            ignore: [{ glob: '*.svg' }, { glob: '*.ts' }, { glob: '*.scss' }, { glob: '*.ttf' }],
+            test: /\.(d.ts|ttf)$/,
+            ignore: [{ glob: '*.svg' }, { glob: '*.scss' }, { glob: '*.ts' }],
         }),
     ],
 };
