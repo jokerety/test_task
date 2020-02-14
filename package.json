@@ -8,7 +8,6 @@
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
     "production": "NODE_ENV=production webpack",
-    "lint": "eslint './**/*.{ts,tsx}' --max-warnings 0"
   },
   "husky": {
     "hooks": {
@@ -16,10 +15,9 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "yarn lint",
-      "git add"
+    "./src/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "eslint src/*.js --fix-dry-run"
     ]
   },
   "repository": {
