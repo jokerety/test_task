@@ -108,6 +108,7 @@ class NumberComponent extends HTMLElement {
         {
                     const qqw = 121212;;
                     let qwq = qwq;
+                    const qwqdw =qwqw;
                     console.log(
 
 
